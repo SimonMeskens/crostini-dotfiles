@@ -24,9 +24,17 @@
 
     #-- Keyring tools --#
     sudo apt install -y libsecret-1-0 libsecret-1-dev libsecret-tools seahorse
-    echo "auth optional pam_gnome_keyring.so" | sudo tee -a /etc/pam.d/common-auth > /dev/null
-    echo "session optional pam_gnome_keyring.so auto_start" | sudo tee -a /etc/pam.d/common-session > /dev/null
-    echo "password optional pam_gnome_keyring.so" | sudo tee -a /etc/pam.d/passwd > /dev/null
+    if ! grep -q 'pam_gnome_keyring.so' /etc/pam.d/common-auth; then
+        echo "auth optional pam_gnome_keyring.so" | sudo tee -a /etc/pam.d/common-auth > /dev/null
+    fi
+    
+    if ! grep -q 'pam_gnome_keyring.so' /etc/pam.d/common-session; then
+        echo "session optional pam_gnome_keyring.so auto_start" | sudo tee -a /etc/pam.d/common-session > /dev/null
+    fi
+    
+    if ! grep -q 'pam_gnome_keyring.so' /etc/pam.d/passwd; then
+        echo "password optional pam_gnome_keyring.so" | sudo tee -a /etc/pam.d/passwd > /dev/null
+    fi
 
     echo "[Unit]
 Description=GNOME Keyring Daemon
