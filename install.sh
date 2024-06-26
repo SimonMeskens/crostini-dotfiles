@@ -16,7 +16,7 @@
 
 #== Install ==#
     echo "Installing new packages..."
-    sudo apt install -y rsync wget gpg
+    sudo apt install -y gpg rsync wget curl
 
     #-- Dotfiles --#
     echo "Copying over dotfiles..."
@@ -90,6 +90,13 @@ WantedBy=default.target" | sudo tee /etc/systemd/user/gnome-keyring-daemon.servi
     sudo apt install -y code
     
     #-- Mise --#
+    wget -qO - https://mise.jdx.dev/gpg-key.pub | gpg --dearmor > mise-archive-keyring.gpg
+    sudo install -D -o root -g root -m 644 mise-archive-keyring.gpg /etc/apt/keyrings/mise-archive-keyring.gpg
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list > /dev/null
+    rm -f mise-archive-keyring.gpg
+    
+    sudo apt update -y
+    sudo apt install -y mise
 
 #== Flatpak ==#
     #TODO make this all quiet
