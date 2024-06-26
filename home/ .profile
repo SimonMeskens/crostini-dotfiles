@@ -27,6 +27,6 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 
 # activate Mise
-if [ -f "$HOME/.bashrc" ]; then
+if [ -f "$HOME/.miserc" ]; then
 	. "$HOME/.miserc"
 fi
